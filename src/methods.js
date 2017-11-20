@@ -80,6 +80,53 @@ module.exports = {
 			}
 			return response['w3s.response'];
 		}
+	},
+	getPurseHistory: {
+		uri: 'XMLOperations.asp',
+		buildXML: (data, config) => {
+			const { purse, datestart, datefinish } = data;
+			const reqn = Date.now();
+			const sign = generateSignature(config, `${purse}${reqn}`);
+			return `<w3s.request>
+				<reqn>${reqn}</reqn>
+				<wmid>${config.wmid}</wmid>
+				<sign>${sign}</sign>
+				<getoperations>
+						<purse>${purse}</purse>
+						<datestart>${datestart}</datestart>
+						<datefinish>${datefinish}</datefinish>
+				</getoperations>
+			</w3s.request>`;
+		},
+		processResponse: response => {
+			if (response['w3s.response'].retval != 0) {
+				throw new Error(`webmoney api responed with error ${JSON.stringify(response)}`);
+			}
+			return response['w3s.response'].operations.operation;
+		}
+	},
+	finishProtectedTransfer: {
+		uri: 'XMLOperations.asp',
+		buildXML: (data, config) => {
+			const { id, code } = data;
+			const reqn = Date.now();
+			const sign = generateSignature(config, `${id}${code}${reqn}`);
+			return `<w3s.request>
+				<reqn>${reqn}</reqn>
+				<wmid>${config.wmid}</wmid>
+				<sign>${sign}</sign>
+				<finishprotect>
+					<wmtranid>${id}</wmtranid>
+					<pcode>${code}</pcode>
+				</finishprotect>
+			</w3s.request>`;
+		},
+		processResponse: response => {
+			if (response['w3s.response'].retval != 0) {
+				throw new Error(`webmoney api responed with error ${JSON.stringify(response)}`);
+			}
+			return response['w3s.response'];
+		}
 	}
 };
 

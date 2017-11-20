@@ -1,6 +1,6 @@
 {
   "name": "webmoney-client",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "https://www.webmoney.ru/rus/developers/api.shtml",
   "main": "src/index.js",
   "scripts": {
