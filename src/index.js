@@ -23,7 +23,7 @@ module.exports = function (config) {
 		};
 		builtMethods[name] = builtMethod;
 	});
-
+	builtMethods.config = config;
 	return builtMethods;
 
 	async function __request (url, xml) {
