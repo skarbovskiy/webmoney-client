@@ -106,7 +106,7 @@ module.exports = {
 		}
 	},
 	finishProtectedTransfer: {
-		uri: 'XMLOperations.asp',
+		uri: 'XMLFinishProtect.asp',
 		buildXML: (data, config) => {
 			const { id, code } = data;
 			const reqn = Date.now();
